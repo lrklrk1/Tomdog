@@ -1,20 +1,18 @@
 package Tomdog.http;
 
-
-
 public class HttpRequestLine {
 
-    protected static final int INITIAL_METHOD_LENGTH  = 8;
+    protected static final int INITIAL_METHOD_LENGTH  =8;
 
-    protected static final int INITIAL_URI_LENGTH  = 64;
+    protected static final int INITIAL_URI_LENGTH  =64;
 
-    protected static final int INITIAL_PROTOCOL_LENGTH  = 8;
+    protected static final int INITIAL_PROTOCOL_LENGTH  =8;
 
-    protected static final int MAX_METHOD_LENGTH = 1024;
+    protected static final int MAX_METHOD_LENGTH =1024;
 
-    protected static final int MAX_URI_LENGTH = 32768;
+    protected static final int MAX_URI_LENGTH =32768;
 
-    protected static final int MAX_PROTOCOL_LENGTH = 1024;
+    protected static final int MAX_PROTOCOL_LENGTH =1024;
 
     public HttpRequestLine() {
 
@@ -46,19 +44,19 @@ public class HttpRequestLine {
 
     }
 
-    private char[] method;
+    private char[]method;
 
     private int methodEnd;
 
-    private char[] uri;
+    private char[]uri;
 
     private int uriEnd;
 
-    private char[] protocol;
+    private char[]protocol;
 
     private int protocolEnd;
 
-    public char[] getMethod() {
+    public char[]getMethod() {
 
         return method;
 
@@ -82,7 +80,7 @@ public class HttpRequestLine {
 
     }
 
-    public char[] getUri() {
+    public char[]getUri() {
 
         return uri;
 
@@ -106,7 +104,7 @@ public class HttpRequestLine {
 
     }
 
-    public char[] getProtocol() {
+    public char[]getProtocol() {
 
         return protocol;
 
@@ -132,12 +130,14 @@ public class HttpRequestLine {
 
     public void recyle() {
 
-        this.methodEnd = 0;
+        this.methodEnd =0;
 
-        this.protocolEnd = 0;
+        this.protocolEnd =0;
 
-        this.uriEnd = 0;
+        this.uriEnd =0;
 
     }
+
+
 
 }
