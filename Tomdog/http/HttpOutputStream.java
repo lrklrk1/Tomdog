@@ -4,21 +4,19 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.util.HashMap;
 
-import static Tomdog.http.HTTPCommon.COLON;
-import static Tomdog.http.HTTPCommon.CRLF;
-import static Tomdog.http.HTTPCommon.SP;
+import static Tomdog.http.HTTPCommon.CR;
+import static Tomdog.http.HTTPCommon.LF;
+import static Tomdog.http.HTTPCommon.SCOLON;
+import static Tomdog.http.HTTPCommon.SCR;
+import static Tomdog.http.HTTPCommon.SLF;
+import static Tomdog.http.HTTPCommon.SSP;
 
 public class HttpOutputStream {
-
-    private byte[] buffer;
-
-    private int current;
 
     private OutputStream out;
 
     public HttpOutputStream(OutputStream out) {
         this.out = out;
-        this.current = 0;
     }
 
     public void writeResponse(HttpResponse response) {
@@ -33,45 +31,45 @@ public class HttpOutputStream {
 
         HashMap<String, HttpHeader> headers = response.getHeaders();
 
-        StringBuilder sb = new StringBuilder();
-
         try {
-            write(line, sb);
-            write(headers, sb);
-            out.write(sb.toString().getBytes());
+            byte[] sc = write(line);
+            byte[] hs = write(headers);
+            out.write(sc);
+            out.write(hs);
+            String entity = response.getEntity();
+            if (entity != null) {
+                out.write(response.getEntity().getBytes());
+            }
             out.flush();
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-    private void write(HttpResponseLine line, StringBuilder sb) throws IOException {
+    private byte[] write(HttpResponseLine line) throws IOException {
         if (line == null) {
-            return;
+            return new byte[]{};
         }
 
         String version = line.getHttpVersion();
         Integer code = line.getCode();
-        String phrase = line.getResonPhrase();
+        String phrase = line.getReasonPhrase();
 
         if (version == null || version.equals("")
                 || code == null
                 || phrase == null || phrase.equals("")) {
-            System.out.println("the response line is missing something " + version + "　" + code + " " + " " + phrase);
-            return;
+            System.out.println("the response line is missing something " + version + "銆€" + code + " " + " " + phrase);
+            return new byte[]{};
         }
 
-        sb.append(version.getBytes());
-        sb.append(SP);
-        sb.append(code);
-        sb.append(SP);
-        sb.append(phrase.getBytes());
-        sb.append(CRLF);
-//        out.write(CR);
-//        out.write(LF);
+        String responseLine = version + SSP + code + SSP + phrase + SCR + SLF;
+
+        return responseLine.getBytes();
     }
 
-    private void write(HashMap<String, HttpHeader> headers, StringBuilder sb) throws IOException {
+    private byte[] write(HashMap<String, HttpHeader> headers) throws IOException {
+
+        StringBuilder sb = new StringBuilder();
 
         for (HttpHeader header : headers.values()) {
 
@@ -81,22 +79,23 @@ public class HttpOutputStream {
                 continue;
             }
 
-            write(header, sb);
+            sb.append(write(header));
+            sb.append(SCR);
+            sb.append(SLF);
         }
+        sb.append(SCR);
+        sb.append(SLF);
+        return sb.toString().getBytes();
     }
 
-    private void write(HttpHeader header, StringBuilder sb) throws IOException {
+    private String write(HttpHeader header) throws IOException {
         if (header == null) {
-            return;
+            return "";
         }
 
         String name = new String(header.getName(), 0, header.getNameEnd());
         String value = new String(header.getValue(), 0, header.getValueEnd());
-
-        sb.append(name.getBytes());
-        sb.append(COLON);
-        sb.append(SP);
-        sb.append(value.getBytes());
+        return name + SCOLON + value;
     }
 
 }

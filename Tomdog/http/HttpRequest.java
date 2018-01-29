@@ -1,6 +1,7 @@
 package Tomdog.http;
 
 import java.util.HashMap;
+import java.util.Map;
 
 public abstract class HttpRequest {
 
@@ -25,5 +26,17 @@ public abstract class HttpRequest {
     public abstract void addHeader(HttpHeader header);
 
     public abstract void addLine(HttpRequestLine line);
+
+    public abstract Map<String, String> getHeaders();
+
+    public abstract String getUri();
+
+    public abstract String getAbsUri();
+
+    public abstract String getContextUri();
+
+    public abstract String getMethod();
+
+    public abstract Map<String, String> getPara();
 
 }

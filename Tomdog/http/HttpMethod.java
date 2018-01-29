@@ -15,7 +15,7 @@ public enum HttpMethod {
         }
     }
 
-    String value;
+    private String value;
 
     HttpMethod(String value) {
         this.value = value;
@@ -30,7 +30,7 @@ public enum HttpMethod {
         }
     }
 
-    private String getValue() {
+    public String getValue() {
         return this.value;
     }
 

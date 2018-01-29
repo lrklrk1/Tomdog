@@ -1,6 +1,9 @@
 package Tomdog.http;
 
 import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import static Tomdog.http.HTTPCommon.defaultHttpVersion;
 
@@ -46,12 +49,12 @@ public class HttpRequestImpl extends HttpRequest {
             this.protocol = protocol;
         }
 
-        /*只对uri进行解析，得到在uri中的地址，以及参数*/
+        /*�Û�uri菴�茵�茹ｆ��鐚�緇��医��uri筝㊦���医��鐚�篁ュ�����*/
         parseLine();
 
     }
 
-    //    目前只支持uri解析，协议不支持其他的协议或者版本，方法支持get，head。
+    //    �����Ŭ����uri茹ｆ��鐚��顒�������銀����顒�����������号�����get鐚�head��
     private void parseLine() {
 
 //        TODO
@@ -95,10 +98,13 @@ public class HttpRequestImpl extends HttpRequest {
     private void parseAbsAndContextUri(String uri) {
         int contextIndex = uri.indexOf("/", 2);
 
-        this.absUri = uri.substring(0, contextIndex);
-
-        this.contextUri = uri.substring(contextIndex);
-
+        if (contextIndex == -1) {
+            this.absUri = uri;
+            this.contextUri = "";
+        } else {
+            this.absUri = uri.substring(0, contextIndex);
+            this.contextUri = uri.substring(contextIndex);
+        }
     }
 
 
@@ -118,7 +124,7 @@ public class HttpRequestImpl extends HttpRequest {
         parseHeader(name);
     }
 
-    /*对请求信息进行解析，这里只解析一个Cookie属性*/
+    /*絲壕�羆�篆≧���茵�茹ｆ��鐚�菴����ŰВ��筝�筝�Cookie絮���*/
     private void parseHeader(String name) {
 
 //        TODO
@@ -126,7 +132,7 @@ public class HttpRequestImpl extends HttpRequest {
         parseCookies(name);
     }
 
-    /*只有在Cookie下的，以分号分隔，以等号作为name和value标志的参数才作为cookie*/
+    /*�Ŭ����Cookie筝���鐚�篁ュ���垸����鐚�篁ョ��垬�筝�name��value��綽������井��篏�筝�cookie*/
     private void parseCookies(String name) {
 
         if (!name.equals("Cookies")) {
@@ -150,4 +156,31 @@ public class HttpRequestImpl extends HttpRequest {
 
     }
 
+    public Map<String, String> getHeaders() {
+        return this.headers;
+    }
+
+    public String getUri() {
+        return this.uri;
+    }
+
+    @Override
+    public String getAbsUri() {
+        return this.absUri;
+    }
+
+    @Override
+    public String getContextUri() {
+        return null;
+    }
+
+    @Override
+    public String getMethod() {
+        return this.method.getValue();
+    }
+
+    @Override
+    public Map<String, String> getPara() {
+        return this.parameters;
+    }
 }

@@ -8,6 +8,10 @@ public abstract class HttpResponse {
 
     HashMap<String, HttpHeader> headers;
 
+    HttpOutputStream out;
+
+    String entity;
+
     public HttpResponseLine getLine() {
         return line;
     }
@@ -16,8 +20,20 @@ public abstract class HttpResponse {
         return headers;
     }
 
-    public abstract void ok();
+    /*make 200 response*/
+    public abstract HttpResponse ok();
 
-    public abstract void bad();
+    /*make 400 response*/
+    public abstract HttpResponse bad();
+
+    /*add header*/
+    public abstract void addHeader(HttpHeader header);
+
+    /*write to front*/
+    public abstract void build();
+
+    public abstract void setEntity(String entity);
+
+    public abstract String getEntity();
 
 }

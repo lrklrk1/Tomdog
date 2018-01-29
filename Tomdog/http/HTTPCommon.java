@@ -2,7 +2,6 @@ package Tomdog.http;
 
 public class HTTPCommon {
 
-
     static final byte CR = (byte) '\r';
 
     static final byte LF = (byte) '\n';
@@ -17,4 +16,11 @@ public class HTTPCommon {
 
     static final String defaultHttpVersion = "HTTP/1.1";
 
+    static final String SCR = "\r";
+
+    static final String SLF = "\n";
+
+    static final String SSP = " ";
+
+    static final String SCOLON = ":";
 }
